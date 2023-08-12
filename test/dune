@@ -1,2 +1,3 @@
 (test
- (name ocaml99))
+ (name ocaml99_exercises_test)
+ (libraries ounit2 ocaml99))
