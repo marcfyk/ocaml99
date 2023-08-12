@@ -10,14 +10,13 @@ let rec last_two = function
   | _ :: xs -> last_two xs
 ;;
 
-let rec nth xs n =
-  if n < 0
-  then None
-  else (
-    match xs, n with
-    | [], _ -> None
-    | x :: _, 0 -> Some x
-    | _ :: xs, m -> nth xs (m - 1))
+let rec nth xs = function
+  | n when n < 0 -> None
+  | n ->
+    (match xs, n with
+     | [], _ -> None
+     | x :: _, 0 -> Some x
+     | _ :: xs, m -> nth xs (m - 1))
 ;;
 
 let length xs =
@@ -42,21 +41,21 @@ type 'a node =
   | One of 'a
   | Many of 'a node list
 
-let flatten nodes =
+let flatten xs =
   let rec flatten' acc = function
     | [] -> acc
     | One x :: xs -> flatten' (x :: acc) xs
     | Many x :: xs -> flatten' (flatten' acc x) xs
   in
-  nodes |> flatten' [] |> rev
+  flatten' [] xs |> rev
 ;;
 
 let compress xs =
   let rec compress' acc xs =
     match acc, xs with
     | _, [] -> acc
-    | [], x :: xs -> compress' (x :: acc) xs
-    | y :: _, x :: xs -> if y == x then compress' acc xs else compress' (x :: acc) xs
+    | y :: _, x :: xs when y == x -> compress' acc xs
+    | _, x :: xs -> compress' (x :: acc) xs
   in
   compress' [] xs |> rev
 ;;
@@ -65,10 +64,9 @@ let pack xs =
   let rec pack' acc xs =
     match acc, xs with
     | _, [] -> acc
-    | [], xs -> pack' ([] :: acc) xs
     | [] :: ys, x :: xs -> pack' ([ x ] :: ys) xs
-    | (y' :: _ as ys') :: ys, x :: xs ->
-      if y' == x then pack' ((x :: ys') :: ys) xs else pack' ([ x ] :: acc) xs
+    | (y' :: _ as ys') :: ys, x :: xs when y' == x -> pack' ((x :: ys') :: ys) xs
+    | _, x :: xs -> pack' ([ x ] :: acc) xs
   in
   pack' [] xs |> rev
 ;;
@@ -78,8 +76,8 @@ let encode xs =
     match acc, xs with
     | _, [] -> acc
     | [], x :: xs -> encode' ((1, x) :: acc) xs
-    | (count, y) :: ys, x :: xs ->
-      if y == x then encode' ((count + 1, y) :: ys) xs else encode' ((1, x) :: acc) xs
+    | (count, y) :: ys, x :: xs when y == x -> encode' ((count + 1, y) :: ys) xs
+    | _, x :: xs -> encode' ((1, x) :: acc) xs
   in
   encode' [] xs |> rev
 ;;
@@ -92,15 +90,10 @@ let encode_modified xs =
   let rec encode_modified' acc xs =
     match acc, xs with
     | _, [] -> acc
-    | [], x :: xs -> encode_modified' (One x :: acc) xs
-    | One y :: ys, x :: xs ->
-      if y == x
-      then encode_modified' (Many (2, y) :: ys) xs
-      else encode_modified' (One x :: acc) xs
-    | Many (count, y) :: ys, x :: xs ->
-      if y == x
-      then encode_modified' (Many (count + 1, y) :: ys) xs
-      else encode_modified' (One x :: acc) xs
+    | One y :: ys, x :: xs when y == x -> encode_modified' (Many (2, y) :: ys) xs
+    | Many (count, y) :: ys, x :: xs when y == x ->
+      encode_modified' (Many (count + 1, y) :: ys) xs
+    | _, x :: xs -> encode_modified' (One x :: acc) xs
   in
   encode_modified' [] xs |> rev
 ;;
@@ -120,14 +113,10 @@ let encode_direct xs =
     match acc, xs with
     | _, [] -> acc
     | [], x :: xs -> encode_direct' [ One x ] xs
-    | One y :: ys, x :: xs ->
-      if y == x
-      then encode_direct' (Many (2, y) :: ys) xs
-      else encode_direct' (One x :: acc) xs
-    | Many (count, y) :: ys, x :: xs ->
-      if y == x
-      then encode_direct' (Many (count + 1, y) :: ys) xs
-      else encode_direct' (One x :: acc) xs
+    | One y :: ys, x :: xs when y == x -> encode_direct' (Many (2, y) :: ys) xs
+    | Many (count, y) :: ys, x :: xs when y == x ->
+      encode_direct' (Many (count + 1, y) :: ys) xs
+    | _, x :: xs -> encode_direct' (One x :: acc) xs
   in
   encode_direct' [] xs |> rev
 ;;
@@ -150,28 +139,26 @@ let replicate xs n =
   replicate' [] n xs |> rev
 ;;
 
-let drop xs n =
-  if n <= 0
-  then xs
-  else (
+let drop xs = function
+  | n when n <= 0 -> xs
+  | n ->
     let rec drop' acc m xs =
       match m, xs with
       | _, [] -> acc
       | 1, _ :: xs -> drop' acc n xs
       | _, x :: xs -> drop' (x :: acc) (m - 1) xs
     in
-    drop' [] n xs |> rev)
+    drop' [] n xs |> rev
 ;;
 
-let split xs n =
-  if n <= 0
-  then [], xs
-  else (
+let split xs = function
+  | n when n <= 0 -> [], xs
+  | n ->
     let rec split' acc m xs =
       match m, xs with
       | _, [] -> rev acc, []
       | 0, xs -> rev acc, xs
       | _, x :: xs -> split' (x :: acc) (m - 1) xs
     in
-    split' [] n xs)
+    split' [] n xs
 ;;
