@@ -88,14 +88,14 @@ type 'a rle =
     single elements and sub-lists. *)
 val encode_modified : 'a list -> 'a rle list
 
-(** Decode a Run-Length Encoded List ☡
+(** Decode a Run-Length Encoded List
     Intermediate difficulty
 
     Given a run-length code list generated as specified in the previous problem,
     construct its uncompressed version. *)
 val decode : 'a rle list -> 'a list
 
-(** Run-Length Encoding of a List (Direct Solution) ☡
+(** Run-Length Encoding of a List (Direct Solution)
     Intermediate difficulty
 
     Implement the so-called run-length encoding data compression method directly.
@@ -111,7 +111,7 @@ val encode_direct : 'a list -> 'a rle list
     Duplicate the elements of a list. *)
 val duplicate : 'a list -> 'a list
 
-(** Replicate the Elements of a List a Given Number of Times ☡
+(** Replicate the Elements of a List a Given Number of Times
     Intermediate difficulty
 
     Replicate the elements of a list a given number of times. *)
