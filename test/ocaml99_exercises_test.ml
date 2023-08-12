@@ -4,44 +4,46 @@ open Ocaml99.Exercises
 let tests_last =
   "last"
   >::: [ ("empty list" >:: fun _ -> assert_equal None (last []))
-       ; ("singleton list" >:: fun _ -> assert_equal (Some 1) (last [ 1 ]))
+       ; ("singleton list" >:: fun _ -> assert_equal (Some "a") (last [ "a" ]))
        ; ("list with more than 1 element"
-          >:: fun _ -> assert_equal (Some 2) (last [ 1; 3; 2 ]))
+          >:: fun _ -> assert_equal (Some "d") (last [ "a"; "b"; "c"; "d" ]))
        ]
 ;;
 
 let tests_last_two =
   "last_two"
   >::: [ ("empty list" >:: fun _ -> assert_equal None (last_two []))
-       ; ("singleton list" >:: fun _ -> assert_equal None (last_two [ 1 ]))
-       ; ("list of 2 elements" >:: fun _ -> assert_equal (Some (2, 1)) (last_two [ 2; 1 ]))
+       ; ("singleton list" >:: fun _ -> assert_equal None (last_two [ "a" ]))
+       ; ("list of 2 elements"
+          >:: fun _ -> assert_equal (Some ("a", "b")) (last_two [ "a"; "b" ]))
        ; ("list with more than 2 elements"
-          >:: fun _ -> assert_equal (Some (3, 2)) (last_two [ 1; 3; 2 ]))
+          >:: fun _ -> assert_equal (Some ("c", "d")) (last_two [ "a"; "b"; "c"; "d" ]))
        ]
 ;;
 
 let tests_nth =
   "nth"
   >::: [ ("empty list" >:: fun _ -> assert_equal None (nth [] 0))
-       ; ("index == length of list" >:: fun _ -> assert_equal None (nth [ 1 ] 1))
-       ; ("index > length of list" >:: fun _ -> assert_equal None (nth [ 1 ] 2))
-       ; ("index < 0" >:: fun _ -> assert_equal None (nth [ 1 ] (-2)))
+       ; ("index == length of list" >:: fun _ -> assert_equal None (nth [ "a" ] 1))
+       ; ("index > length of list" >:: fun _ -> assert_equal None (nth [ "a" ] 2))
+       ; ("index < 0" >:: fun _ -> assert_equal None (nth [ "a" ] (-2)))
        ; ("0 <= index < length of list"
-          >:: fun _ -> assert_equal (Some 3) (nth [ 1; 3; 2 ] 1))
+          >:: fun _ -> assert_equal (Some "c") (nth [ "a"; "b"; "c"; "d"; "e" ] 2))
        ]
 ;;
 
 let tests_length =
   "length"
   >::: [ ("empty list" >:: fun _ -> assert_equal 0 (length []))
-       ; ("non empty list" >:: fun _ -> assert_equal 3 (length [ 1; 3; 2 ]))
+       ; ("non empty list" >:: fun _ -> assert_equal 3 (length [ "a"; "b"; "c" ]))
        ]
 ;;
 
 let tests_reverse =
   "rev"
   >::: [ ("empty list" >:: fun _ -> assert_equal [] (rev []))
-       ; ("non empty list" >:: fun _ -> assert_equal [ 2; 3; 1 ] (rev [ 1; 3; 2 ]))
+       ; ("non empty list"
+          >:: fun _ -> assert_equal [ "c"; "b"; "a" ] (rev [ "a"; "b"; "c" ]))
        ]
 ;;
 
@@ -49,9 +51,9 @@ let tests_is_palindrome =
   "is_palindrome"
   >::: [ ("empty list" >:: fun _ -> assert_equal true (is_palindrome []))
        ; ("non empty and is a palindrome"
-          >:: fun _ -> assert_equal true (is_palindrome [ 1; 2; 3; 2; 1 ]))
+          >:: fun _ -> assert_equal true (is_palindrome [ "x"; "a"; "m"; "a"; "x" ]))
        ; ("non empty and not a palindrome"
-          >:: fun _ -> assert_equal false (is_palindrome [ 1; 2; 2; 3 ]))
+          >:: fun _ -> assert_equal false (is_palindrome [ "a"; "b" ]))
        ]
 ;;
 
@@ -61,8 +63,8 @@ let tests_flatten =
        ; ("non empty list"
           >:: fun _ ->
           assert_equal
-            [ 1; 2; 3; 4; 5 ]
-            (flatten [ One 1; Many [ One 2; Many [ One 3; One 4 ]; One 5 ] ]))
+            [ "a"; "b"; "c"; "d"; "e" ]
+            (flatten [ One "a"; Many [ One "b"; Many [ One "c"; One "d" ]; One "e" ] ]))
        ]
 ;;
 
@@ -70,7 +72,7 @@ let tests_compress =
   "compress"
   >::: [ ("empty list" >:: fun _ -> assert_equal [] (compress []))
        ; ("list with no consecutive elements"
-          >:: fun _ -> assert_equal [ 1; 3; 2 ] (compress [ 1; 3; 2 ]))
+          >:: fun _ -> assert_equal [ "a"; "b"; "c" ] (compress [ "a"; "b"; "c" ]))
        ; ("list with consecutive elements"
           >:: fun _ ->
           assert_equal
