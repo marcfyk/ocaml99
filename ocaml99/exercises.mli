@@ -139,3 +139,9 @@ val split : 'a list -> int -> 'a list * 'a list
     between the i'th and k'th element of the original list (both limits included).
     Start counting the elements with 0 (this is the way the List module numbers elements). *)
 val slice : 'a list -> int -> int -> 'a list
+
+(** Rotate a List N Places to the Left
+    Intermediate difficulty
+
+    Rotate a list N places to the left. *)
+val rotate : 'a list -> int -> 'a list

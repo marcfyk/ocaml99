@@ -261,6 +261,33 @@ let tests_slice =
        ]
 ;;
 
+let tests_rotate =
+  "rotate"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (rotate [] 1))
+       ; ("n = 0" >:: fun _ -> assert_equal [ "a"; "b"; "c" ] (rotate [ "a"; "b"; "c" ] 0))
+       ; ("n > 0"
+          >:: fun _ ->
+          assert_equal
+            [ "d"; "e"; "f"; "g"; "h"; "a"; "b"; "c" ]
+            (rotate [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h" ] 3))
+       ; ("n > 0 and n > length of list"
+          >:: fun _ ->
+          assert_equal
+            [ "d"; "e"; "f"; "g"; "h"; "a"; "b"; "c" ]
+            (rotate [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h" ] 11))
+       ; ("n < 0"
+          >:: fun _ ->
+          assert_equal
+            [ "d"; "e"; "f"; "g"; "h"; "a"; "b"; "c" ]
+            (rotate [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h" ] (-5)))
+       ; ("n < 0 and |n| > length of list"
+          >:: fun _ ->
+          assert_equal
+            [ "d"; "e"; "f"; "g"; "h"; "a"; "b"; "c" ]
+            (rotate [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h" ] (-13)))
+       ]
+;;
+
 let () =
   run_test_tt_main tests_last;
   run_test_tt_main tests_last_two;
@@ -279,5 +306,6 @@ let () =
   run_test_tt_main tests_replicate;
   run_test_tt_main tests_drop;
   run_test_tt_main tests_split;
-  run_test_tt_main tests_slice
+  run_test_tt_main tests_slice;
+  run_test_tt_main tests_rotate
 ;;

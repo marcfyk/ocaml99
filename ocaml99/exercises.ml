@@ -170,3 +170,13 @@ let slice xs i k =
   let taken, _ = split dropped (k' - i' + 1) in
   taken
 ;;
+
+let rotate xs n =
+  match length xs with
+  | 0 -> xs
+  | len ->
+    let n' = n mod len in
+    let n'' = if n' < 0 then len + n' else n' in
+    let left, right = split xs n'' in
+    right @ left
+;;
