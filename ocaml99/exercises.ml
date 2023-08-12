@@ -65,8 +65,8 @@ let pack xs =
     | _, [] -> acc
     | [], xs -> pack' ([] :: acc) xs
     | [] :: ys, x :: xs -> pack' ([ x ] :: ys) xs
-    | (z :: _ as zs) :: ys, x :: xs ->
-      if z == x then pack' ((x :: zs) :: ys) xs else pack' ([ x ] :: acc) xs
+    | (y' :: _ as ys') :: ys, x :: xs ->
+      if y' == x then pack' ((x :: ys') :: ys) xs else pack' ([ x ] :: acc) xs
   in
   pack' [] xs |> rev
 ;;
