@@ -198,15 +198,46 @@ let tests_duplicate =
 let tests_replicate =
   "replicate"
   >::: [ ("empty list" >:: fun _ -> assert_equal [] (replicate [] 1))
-       ; ("replicate with n = 0"
-          >:: fun _ -> assert_equal [] (replicate [ "a"; "b"; "c" ] 0))
-       ; ("replicate with n = 1"
+       ; ("n = 0" >:: fun _ -> assert_equal [] (replicate [ "a"; "b"; "c" ] 0))
+       ; ("n = 1"
           >:: fun _ -> assert_equal [ "a"; "b"; "c" ] (replicate [ "a"; "b"; "c" ] 1))
-       ; ("replicate with n > 1"
+       ; ("n > 1"
           >:: fun _ ->
           assert_equal
             [ "a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c" ]
             (replicate [ "a"; "b"; "c" ] 3))
+       ]
+;;
+
+let tests_drop =
+  "drop"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (drop [] 1))
+       ; ("n <= 0" >:: fun _ -> assert_equal [ "a"; "b"; "c" ] (drop [ "a"; "b"; "c" ] 0))
+       ; ("n = 1" >:: fun _ -> assert_equal [] (drop [ "a"; "b"; "c" ] 1))
+       ; ("n > 1"
+          >:: fun _ ->
+          assert_equal
+            [ "a"; "b"; "d"; "e"; "g"; "h"; "j" ]
+            (drop [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ] 3))
+       ]
+;;
+
+let tests_split =
+  "split"
+  >::: [ ("empty list" >:: fun _ -> assert_equal ([], []) (split [] 3))
+       ; ("n < 0"
+          >:: fun _ -> assert_equal ([], [ "a"; "b"; "c" ]) (split [ "a"; "b"; "c" ] (-1))
+         )
+       ; ("n = 0"
+          >:: fun _ -> assert_equal ([], [ "a"; "b"; "c" ]) (split [ "a"; "b"; "c" ] 0))
+       ; ("n > 0"
+          >:: fun _ ->
+          assert_equal
+            ([ "a"; "b"; "c" ], [ "d"; "e"; "f"; "g"; "h"; "i"; "j" ])
+            (split [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ] 3))
+       ; ("n > length of list"
+          >:: fun _ ->
+          assert_equal ([ "a"; "b"; "c"; "d" ], []) (split [ "a"; "b"; "c"; "d" ] 5))
        ]
 ;;
 
@@ -225,5 +256,7 @@ let () =
   run_test_tt_main tests_decode;
   run_test_tt_main tests_encode_direct;
   run_test_tt_main tests_duplicate;
-  run_test_tt_main tests_replicate
+  run_test_tt_main tests_replicate;
+  run_test_tt_main tests_drop;
+  run_test_tt_main tests_split
 ;;

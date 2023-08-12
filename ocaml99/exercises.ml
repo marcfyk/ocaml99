@@ -11,11 +11,13 @@ let rec last_two = function
 ;;
 
 let rec nth xs n =
-  match xs, n with
-  | _ when n < 0 -> None
-  | [], _ -> None
-  | x :: _, 0 -> Some x
-  | _ :: xs, m -> nth xs (m - 1)
+  if n < 0
+  then None
+  else (
+    match xs, n with
+    | [], _ -> None
+    | x :: _, 0 -> Some x
+    | _ :: xs, m -> nth xs (m - 1))
 ;;
 
 let length xs =
@@ -146,4 +148,30 @@ let replicate xs n =
     | _, x :: _ -> replicate' (x :: acc) (m - 1) xs
   in
   replicate' [] n xs |> rev
+;;
+
+let drop xs n =
+  if n <= 0
+  then xs
+  else (
+    let rec drop' acc m xs =
+      match m, xs with
+      | _, [] -> acc
+      | 1, _ :: xs -> drop' acc n xs
+      | _, x :: xs -> drop' (x :: acc) (m - 1) xs
+    in
+    drop' [] n xs |> rev)
+;;
+
+let split xs n =
+  if n <= 0
+  then [], xs
+  else (
+    let rec split' acc m xs =
+      match m, xs with
+      | _, [] -> rev acc, []
+      | 0, xs -> rev acc, xs
+      | _, x :: xs -> split' (x :: acc) (m - 1) xs
+    in
+    split' [] n xs)
 ;;

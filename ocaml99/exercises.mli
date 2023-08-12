@@ -116,3 +116,17 @@ val duplicate : 'a list -> 'a list
 
     Replicate the elements of a list a given number of times. *)
 val replicate : 'a list -> int -> 'a list
+
+(** Drop Every N'th Element From a List
+    Intermediate difficulty
+
+    Drop every N'th element from a list. *)
+val drop : 'a list -> int -> 'a list
+
+(** Split a List Into Two Parts; The Length of the First Part Is Given
+    Beginner difficulty
+
+    Split a list into two parts; the length of the first part is given.
+
+    If the length of the first part is longer than the entire list, then the first part is the list and the second part is empty. *)
+val split : 'a list -> int -> 'a list * 'a list
