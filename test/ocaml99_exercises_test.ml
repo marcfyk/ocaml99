@@ -184,6 +184,32 @@ let tests_encode_direct =
        ]
 ;;
 
+let tests_duplicate =
+  "duplicate"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (duplicate []))
+       ; ("non empty list"
+          >:: fun _ ->
+          assert_equal
+            [ "a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d" ]
+            (duplicate [ "a"; "b"; "c"; "c"; "d" ]))
+       ]
+;;
+
+let tests_replicate =
+  "replicate"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (replicate [] 1))
+       ; ("replicate with n = 0"
+          >:: fun _ -> assert_equal [] (replicate [ "a"; "b"; "c" ] 0))
+       ; ("replicate with n = 1"
+          >:: fun _ -> assert_equal [ "a"; "b"; "c" ] (replicate [ "a"; "b"; "c" ] 1))
+       ; ("replicate with n > 1"
+          >:: fun _ ->
+          assert_equal
+            [ "a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c" ]
+            (replicate [ "a"; "b"; "c" ] 3))
+       ]
+;;
+
 let () =
   run_test_tt_main tests_last;
   run_test_tt_main tests_last_two;
@@ -197,5 +223,7 @@ let () =
   run_test_tt_main tests_encode;
   run_test_tt_main tests_encode_modified;
   run_test_tt_main tests_decode;
-  run_test_tt_main tests_encode_direct
+  run_test_tt_main tests_encode_direct;
+  run_test_tt_main tests_duplicate;
+  run_test_tt_main tests_replicate
 ;;

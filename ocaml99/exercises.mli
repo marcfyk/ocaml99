@@ -104,3 +104,15 @@ val decode : 'a rle list -> 'a list
     but only count them. As in problem "Modified run-length encoding",
     simplify the result list by replacing the singleton lists (1 X) by X. *)
 val encode_direct : 'a list -> 'a rle list
+
+(** Duplicate the Elements of a List
+    Beginner difficulty
+
+    Duplicate the elements of a list. *)
+val duplicate : 'a list -> 'a list
+
+(** Replicate the Elements of a List a Given Number of Times ☡
+    Intermediate difficulty
+
+    Replicate the elements of a list a given number of times. *)
+val replicate : 'a list -> int -> 'a list

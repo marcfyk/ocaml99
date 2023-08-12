@@ -129,3 +129,21 @@ let encode_direct xs =
   in
   encode_direct' [] xs |> rev
 ;;
+
+let duplicate xs =
+  let rec duplicate' acc = function
+    | [] -> acc
+    | x :: xs -> duplicate' (x :: x :: acc) xs
+  in
+  duplicate' [] xs |> rev
+;;
+
+let replicate xs n =
+  let rec replicate' acc m xs =
+    match m, xs with
+    | _, [] -> acc
+    | 0, _ :: xs -> replicate' acc n xs
+    | _, x :: _ -> replicate' (x :: acc) (m - 1) xs
+  in
+  replicate' [] n xs |> rev
+;;
