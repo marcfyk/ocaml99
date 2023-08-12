@@ -1,7 +1,7 @@
 (** Tail of a List
     Beginner difficulty
 
-    Write a function last : 'a list -> 'a option that returns the last element of a list *)
+    Write a function last : 'a list -> 'a option that returns the last element of a list. *)
 val last : 'a list -> 'a option
 
 (** Last Two Elements of a List
@@ -18,17 +18,26 @@ val last_two : 'a list -> ('a * 'a) option
     Remark: OCaml has List.nth which numbers elements from 0 and raises an exception if the index is out of bounds. *)
 val nth : 'a list -> int -> 'a option
 
-(** Find the number of elements of a list.
+(** Length of a List
+    Beginner difficulty
+
+    Find the number of elements of a list.
 
     OCaml standard library has List.length but we ask that you reimplement it. Bonus for a tail recursive solution. *)
 val length : 'a list -> int
 
-(** Reverse a list.
+(** Reverse a List
+    Beginner difficulty
 
-    OCaml standard library has List.rev but we ask that you reimplement it.*)
+    Reverse a list.
+
+    OCaml standard library has List.rev but we ask that you reimplement it. *)
 val rev : 'a list -> 'a list
 
-(** Find out whether a list is a palindrome.
+(** Palindrome
+    Beginner difficulty
+
+    Find out whether a list is a palindrome.
 
     Hint: A palindrome is its own reverse. *)
 val is_palindrome : 'a list -> bool
@@ -37,11 +46,20 @@ type 'a node =
   | One of 'a
   | Many of 'a node list
 
-(** Flatten a nested list structure. *)
+(** Flatten a List
+    Intermediate difficulty
+
+    Flatten a nested list structure. *)
 val flatten : 'a node list -> 'a list
 
-(** Eliminate consecutive duplicates of list elements. *)
+(** Eliminate Duplicates
+    Intermediate difficulty
+
+    Eliminate consecutive duplicates of list elements. *)
 val compress : 'a list -> 'a list
 
-(** Pack consecutive duplicates of list elements into sublists. *)
+(** Pack Consecutive Duplicates
+    Intermediate difficulty
+
+    Pack consecutive duplicates of list elements into sublists. *)
 val pack : 'a list -> 'a list list
