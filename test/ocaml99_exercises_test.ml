@@ -31,8 +31,35 @@ let tests_nth =
        ]
 ;;
 
+let tests_length =
+  "length"
+  >::: [ ("empty list" >:: fun _ -> assert_equal 0 (length []))
+       ; ("non empty list" >:: fun _ -> assert_equal 3 (length [ 1; 3; 2 ]))
+       ]
+;;
+
+let tests_reverse =
+  "rev"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (rev []))
+       ; ("non empty list" >:: fun _ -> assert_equal [ 2; 3; 1 ] (rev [ 1; 3; 2 ]))
+       ]
+;;
+
+let tests_is_palindrome =
+  "is_palindrome"
+  >::: [ ("empty list" >:: fun _ -> assert_equal true (is_palindrome []))
+       ; ("non empty and is a palindrome"
+          >:: fun _ -> assert_equal true (is_palindrome [ 1; 2; 3; 2; 1 ]))
+       ; ("non empty and not a palindrome"
+          >:: fun _ -> assert_equal false (is_palindrome [ 1; 2; 2; 3 ]))
+       ]
+;;
+
 let () =
   run_test_tt_main tests_last;
   run_test_tt_main tests_last_two;
-  run_test_tt_main tests_nth
+  run_test_tt_main tests_nth;
+  run_test_tt_main tests_length;
+  run_test_tt_main tests_reverse;
+  run_test_tt_main tests_is_palindrome
 ;;

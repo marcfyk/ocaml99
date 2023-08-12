@@ -17,3 +17,21 @@ let rec nth xs n =
   | x :: _, 0 -> Some x
   | _ :: xs, m -> nth xs (m - 1)
 ;;
+
+let length xs =
+  let rec length' acc = function
+    | [] -> acc
+    | _ :: xs -> length' (acc + 1) xs
+  in
+  length' 0 xs
+;;
+
+let rev xs =
+  let rec rev' acc = function
+    | [] -> acc
+    | x :: xs -> rev' (x :: acc) xs
+  in
+  rev' [] xs
+;;
+
+let is_palindrome xs = rev xs = xs

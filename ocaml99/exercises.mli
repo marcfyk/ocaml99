@@ -17,3 +17,18 @@ val last_two : 'a list -> ('a * 'a) option
 
     Remark: OCaml has List.nth which numbers elements from 0 and raises an exception if the index is out of bounds.*)
 val nth : 'a list -> int -> 'a option
+
+(** Find the number of elements of a list.
+
+    OCaml standard library has List.length but we ask that you reimplement it. Bonus for a tail recursive solution.*)
+val length : 'a list -> int
+
+(** Reverse a list.
+
+    OCaml standard library has List.rev but we ask that you reimplement it.*)
+val rev : 'a list -> 'a list
+
+(** Find out whether a list is a palindrome.
+
+    Hint: A palindrome is its own reverse.*)
+val is_palindrome : 'a list -> bool
