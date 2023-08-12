@@ -63,3 +63,33 @@ val compress : 'a list -> 'a list
 
     Pack consecutive duplicates of list elements into sublists. *)
 val pack : 'a list -> 'a list list
+
+(** Run-Length Encoding
+    Beginner difficulty
+
+    If you need so, refresh your memory about run-length encoding. *)
+val encode : 'a list -> (int * 'a) list
+
+type 'a rle =
+  | One of 'a
+  | Many of int * 'a
+
+(** Modified Run-Length Encoding
+    Beginner difficulty
+
+    Modify the result of the previous problem in such a way that if an element has no duplicates it is simply copied into the result list. Only elements with duplicates are transferred as (N E) lists.
+
+    Since OCaml lists are homogeneous, one needs to define a type to hold both single elements and sub-lists. *)
+val encode_modified : 'a list -> 'a rle list
+
+(** Decode a Run-Length Encoded List ☡
+    Intermediate difficulty
+
+    Given a run-length code list generated as specified in the previous problem, construct its uncompressed version. *)
+val decode : 'a rle list -> 'a list
+
+(** Run-Length Encoding of a List (Direct Solution) ☡
+    Intermediate difficulty
+
+    Implement the so-called run-length encoding data compression method directly. I.e. don't explicitly create the sublists containing the duplicates, as in problem "Pack consecutive duplicates of list elements into sublists", but only count them. As in problem "Modified run-length encoding", simplify the result list by replacing the singleton lists (1 X) by X. *)
+val encode_direct : 'a list -> 'a rle list

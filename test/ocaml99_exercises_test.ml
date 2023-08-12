@@ -118,6 +118,72 @@ let tests_pack =
        ]
 ;;
 
+let tests_encode =
+  "encode"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (encode []))
+       ; ("non empty list"
+          >:: fun _ ->
+          assert_equal
+            [ 4, "a"; 1, "b"; 2, "c"; 2, "a"; 1, "d"; 4, "e" ]
+            (encode
+               [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ]))
+       ]
+;;
+
+let tests_encode_modified =
+  "encode_modified"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (encode_modified []))
+       ; ("non empty list"
+          >:: fun _ ->
+          assert_equal
+            [ Many (4, "a")
+            ; One "b"
+            ; Many (2, "c")
+            ; Many (2, "a")
+            ; One "d"
+            ; Many (4, "e")
+            ]
+            (encode_modified
+               [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ]))
+       ]
+;;
+
+let tests_decode =
+  "decode"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (decode []))
+       ; ("non empty list"
+          >:: fun _ ->
+          assert_equal
+            [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ]
+            (decode
+               [ Many (4, "a")
+               ; One "b"
+               ; Many (2, "c")
+               ; Many (2, "a")
+               ; One "d"
+               ; Many (4, "e")
+               ]))
+       ]
+;;
+
+let tests_encode_direct =
+  "encode_direct"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (encode_direct []))
+       ; ("non empty list"
+          >:: fun _ ->
+          assert_equal
+            [ Many (4, "a")
+            ; One "b"
+            ; Many (2, "c")
+            ; Many (2, "a")
+            ; One "d"
+            ; Many (4, "e")
+            ]
+            (encode_direct
+               [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ]))
+       ]
+;;
+
 let () =
   run_test_tt_main tests_last;
   run_test_tt_main tests_last_two;
@@ -127,5 +193,9 @@ let () =
   run_test_tt_main tests_is_palindrome;
   run_test_tt_main tests_flatten;
   run_test_tt_main tests_compress;
-  run_test_tt_main tests_pack
+  run_test_tt_main tests_pack;
+  run_test_tt_main tests_encode;
+  run_test_tt_main tests_encode_modified;
+  run_test_tt_main tests_decode;
+  run_test_tt_main tests_encode_direct
 ;;

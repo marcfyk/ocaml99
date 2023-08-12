@@ -70,3 +70,62 @@ let pack xs =
   in
   pack' [] xs |> rev
 ;;
+
+let encode xs =
+  let rec encode' acc xs =
+    match acc, xs with
+    | _, [] -> acc
+    | [], x :: xs -> encode' ((1, x) :: acc) xs
+    | (count, y) :: ys, x :: xs ->
+      if y == x then encode' ((count + 1, y) :: ys) xs else encode' ((1, x) :: acc) xs
+  in
+  encode' [] xs |> rev
+;;
+
+type 'a rle =
+  | One of 'a
+  | Many of int * 'a
+
+let encode_modified xs =
+  let rec encode_modified' acc xs =
+    match acc, xs with
+    | _, [] -> acc
+    | [], x :: xs -> encode_modified' (One x :: acc) xs
+    | One y :: ys, x :: xs ->
+      if y == x
+      then encode_modified' (Many (2, y) :: ys) xs
+      else encode_modified' (One x :: acc) xs
+    | Many (count, y) :: ys, x :: xs ->
+      if y == x
+      then encode_modified' (Many (count + 1, y) :: ys) xs
+      else encode_modified' (One x :: acc) xs
+  in
+  encode_modified' [] xs |> rev
+;;
+
+let decode xs =
+  let rec decode' acc = function
+    | [] -> acc
+    | One x :: xs -> decode' (x :: acc) xs
+    | Many (1, x) :: xs -> decode' (x :: acc) xs
+    | Many (count, x) :: xs -> decode' (x :: acc) (Many (count - 1, x) :: xs)
+  in
+  decode' [] xs |> rev
+;;
+
+let encode_direct xs =
+  let rec encode_direct' acc xs =
+    match acc, xs with
+    | _, [] -> acc
+    | [], x :: xs -> encode_direct' [ One x ] xs
+    | One y :: ys, x :: xs ->
+      if y == x
+      then encode_direct' (Many (2, y) :: ys) xs
+      else encode_direct' (One x :: acc) xs
+    | Many (count, y) :: ys, x :: xs ->
+      if y == x
+      then encode_direct' (Many (count + 1, y) :: ys) xs
+      else encode_direct' (One x :: acc) xs
+  in
+  encode_direct' [] xs |> rev
+;;
