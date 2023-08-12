@@ -128,5 +128,14 @@ val drop : 'a list -> int -> 'a list
 
     Split a list into two parts; the length of the first part is given.
 
-    If the length of the first part is longer than the entire list, then the first part is the list and the second part is empty. *)
+    If the length of the first part is longer than the entire list, then the
+    first part is the list and the second part is empty. *)
 val split : 'a list -> int -> 'a list * 'a list
+
+(** Extract a Slice From a List
+    Intermediate difficulty
+
+    Given two indices, i and k, the slice is the list containing the elements
+    between the i'th and k'th element of the original list (both limits included).
+    Start counting the elements with 0 (this is the way the List module numbers elements). *)
+val slice : 'a list -> int -> int -> 'a list

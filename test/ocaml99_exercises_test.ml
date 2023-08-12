@@ -241,6 +241,26 @@ let tests_split =
        ]
 ;;
 
+let tests_slice =
+  "slice"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (slice [] 1 2))
+       ; ("i < 0"
+          >:: fun _ ->
+          assert_equal [ "a"; "b"; "c" ] (slice [ "a"; "b"; "c"; "d"; "e" ] (-1) 2))
+       ; ("k < 0" >:: fun _ -> assert_equal [] (slice [ "a"; "b"; "c"; "d"; "e" ] 1 (-2)))
+       ; ("i > length of list"
+          >:: fun _ -> assert_equal [] (slice [ "a"; "b"; "c"; "d"; "e" ] 10 2))
+       ; ("k > length of list"
+          >:: fun _ ->
+          assert_equal [ "b"; "c"; "d"; "e" ] (slice [ "a"; "b"; "c"; "d"; "e" ] 1 10))
+       ; ("(i, k) > 0 and (i, k) < length of list"
+          >:: fun _ ->
+          assert_equal
+            [ "c"; "d"; "e"; "f"; "g" ]
+            (slice [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ] 2 6))
+       ]
+;;
+
 let () =
   run_test_tt_main tests_last;
   run_test_tt_main tests_last_two;
@@ -258,5 +278,6 @@ let () =
   run_test_tt_main tests_duplicate;
   run_test_tt_main tests_replicate;
   run_test_tt_main tests_drop;
-  run_test_tt_main tests_split
+  run_test_tt_main tests_split;
+  run_test_tt_main tests_slice
 ;;

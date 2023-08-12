@@ -162,3 +162,11 @@ let split xs = function
     in
     split' [] n xs
 ;;
+
+let slice xs i k =
+  let i' = if i < 0 then 0 else i in
+  let k' = if k < 0 then 0 else k in
+  let _, dropped = split xs i' in
+  let taken, _ = split dropped (k' - i' + 1) in
+  taken
+;;
