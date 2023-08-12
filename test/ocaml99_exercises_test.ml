@@ -55,11 +55,75 @@ let tests_is_palindrome =
        ]
 ;;
 
+let tests_flatten =
+  "flatten"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (flatten []))
+       ; ("non empty list"
+          >:: fun _ ->
+          assert_equal
+            [ 1; 2; 3; 4; 5 ]
+            (flatten [ One 1; Many [ One 2; Many [ One 3; One 4 ]; One 5 ] ]))
+       ]
+;;
+
+let tests_compress =
+  "compress"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (compress []))
+       ; ("list with no consecutive elements"
+          >:: fun _ -> assert_equal [ 1; 3; 2 ] (compress [ 1; 3; 2 ]))
+       ; ("list with consecutive elements"
+          >:: fun _ ->
+          assert_equal
+            [ "a"; "b"; "c"; "a"; "d"; "e" ]
+            (compress
+               [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ]))
+       ]
+;;
+
+let tests_pack =
+  "pack"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (pack []))
+       ; ("list with no consecutive duplicates"
+          >:: fun _ -> assert_equal [ [ "a" ]; [ "b" ]; [ "c" ] ] (pack [ "a"; "b"; "c" ])
+         )
+       ; ("list with consecutive duplicates"
+          >:: fun _ ->
+          assert_equal
+            [ [ "a"; "a"; "a"; "a" ]
+            ; [ "b" ]
+            ; [ "c"; "c" ]
+            ; [ "a"; "a" ]
+            ; [ "d"; "d" ]
+            ; [ "e"; "e"; "e"; "e" ]
+            ]
+            (pack
+               [ "a"
+               ; "a"
+               ; "a"
+               ; "a"
+               ; "b"
+               ; "c"
+               ; "c"
+               ; "a"
+               ; "a"
+               ; "d"
+               ; "d"
+               ; "e"
+               ; "e"
+               ; "e"
+               ; "e"
+               ]))
+       ]
+;;
+
 let () =
   run_test_tt_main tests_last;
   run_test_tt_main tests_last_two;
   run_test_tt_main tests_nth;
   run_test_tt_main tests_length;
   run_test_tt_main tests_reverse;
-  run_test_tt_main tests_is_palindrome
+  run_test_tt_main tests_is_palindrome;
+  run_test_tt_main tests_flatten;
+  run_test_tt_main tests_compress;
+  run_test_tt_main tests_pack
 ;;
