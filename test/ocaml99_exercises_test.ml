@@ -288,6 +288,69 @@ let tests_rotate =
        ]
 ;;
 
+let tests_remove_at =
+  "remove_at"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (remove_at 1 []))
+       ; ("k < 0"
+          >:: fun _ ->
+          assert_equal [ "a"; "b"; "c"; "d" ] (remove_at (-1) [ "a"; "b"; "c"; "d" ]))
+       ; ("k = length of list"
+          >:: fun _ ->
+          assert_equal [ "a"; "b"; "c"; "d" ] (remove_at 4 [ "a"; "b"; "c"; "d" ]))
+       ; ("k > length of list"
+          >:: fun _ ->
+          assert_equal [ "a"; "b"; "c"; "d" ] (remove_at 5 [ "a"; "b"; "c"; "d" ]))
+       ; ("k >= 0 and k < length of list"
+          >:: fun _ -> assert_equal [ "a"; "c"; "d" ] (remove_at 1 [ "a"; "b"; "c"; "d" ])
+         )
+       ]
+;;
+
+let tests_insert_at =
+  "insert_at"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [ "a" ] (insert_at "a" 0 []))
+       ; ("non empty list"
+          >:: fun _ ->
+          assert_equal
+            [ "a"; "alfa"; "b"; "c"; "d" ]
+            (insert_at "alfa" 1 [ "a"; "b"; "c"; "d" ]))
+       ; ("index < 0"
+          >:: fun _ -> assert_equal [ "a"; "b"; "c" ] (insert_at "a" (-1) [ "b"; "c" ]))
+       ; ("index = length of list"
+          >:: fun _ -> assert_equal [ "a"; "b"; "c" ] (insert_at "c" 2 [ "a"; "b" ]))
+       ; ("index > length of list"
+          >:: fun _ -> assert_equal [ "a"; "b"; "c" ] (insert_at "c" 3 [ "a"; "b" ]))
+       ]
+;;
+
+let tests_range =
+  "range"
+  >::: [ ("start > end" >:: fun _ -> assert_equal [] (range 1 0))
+       ; ("start = end" >:: fun _ -> assert_equal [ 1 ] (range 1 1))
+       ; ("start < end" >:: fun _ -> assert_equal [ 4; 5; 6; 7; 8; 9 ] (range 4 9))
+       ]
+;;
+
+let tests_rand_select =
+  "rand_select"
+  >::: [ ("empty list" >:: fun _ -> assert_equal [] (rand_select [] 0))
+       ; ("non empty list"
+          >:: fun _ ->
+          assert_equal
+            [ "g"; "d"; "b" ]
+            (rand_select [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h" ] 3))
+       ; ("n > length of list" >:: fun _ -> assert_equal [ "a" ] (rand_select [ "a" ] 2))
+       ]
+;;
+
+let tests_lotto_select =
+  "lotto_select"
+  >::: [ ("no elements" >:: fun _ -> assert_equal [] (lotto_select 0 10))
+       ; ("non empty list"
+          >:: fun _ -> assert_equal [ 29; 4; 20; 35; 24; 19 ] (lotto_select 6 49))
+       ]
+;;
+
 let () =
   run_test_tt_main tests_last;
   run_test_tt_main tests_last_two;
@@ -307,5 +370,10 @@ let () =
   run_test_tt_main tests_drop;
   run_test_tt_main tests_split;
   run_test_tt_main tests_slice;
-  run_test_tt_main tests_rotate
+  run_test_tt_main tests_rotate;
+  run_test_tt_main tests_remove_at;
+  run_test_tt_main tests_insert_at;
+  run_test_tt_main tests_range;
+  run_test_tt_main tests_rand_select;
+  run_test_tt_main tests_lotto_select
 ;;

@@ -145,3 +145,39 @@ val slice : 'a list -> int -> int -> 'a list
 
     Rotate a list N places to the left. *)
 val rotate : 'a list -> int -> 'a list
+
+(** Remove the K'th Element From a List
+    Beginner difficulty
+
+    Remove the K'th element from a list.
+
+    The first element of the list is numbered 0, the second 1,... *)
+val remove_at : int -> 'a list -> 'a list
+
+(** Insert an Element at a Given Position Into a List
+    Beginner difficulty
+
+    Start counting list elements with 0. If the position is larger or equal to
+    the length of the list, insert the element at the end. (The behavior is
+    unspecified if the position is negative.) *)
+val insert_at : 'a -> int -> 'a list -> 'a list
+
+(** Create a List Containing All Integers Within a Given Range
+    Beginner difficulty
+
+    If first argument is greater than second, produce a list in decreasing order. *)
+val range : int -> int -> int list
+
+(** Extract a Given Number of Randomly Selected Elements From a List
+    Intermediate difficulty
+
+    The selected items shall be returned in a list. We use the Random module but do not initialize it with Random.self_init for reproducibility. *)
+val rand_select : 'a list -> int -> 'a list
+
+(** Lotto: Draw N Different Random Numbers From the Set 1..M
+    Beginner difficulty
+
+    Draw N different random numbers from the set 1..M.
+
+    The selected numbers shall be returned in a list. *)
+val lotto_select : int -> int -> int list

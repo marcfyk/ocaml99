@@ -164,11 +164,22 @@ let split xs = function
 ;;
 
 let slice xs i k =
+  let rec drop n = function
+    | ys when n <= 0 -> ys
+    | [] -> []
+    | _ :: ys -> drop (n - 1) ys
+  in
+  let take n ys =
+    let rec take' acc m = function
+      | _ when m <= 0 -> acc
+      | [] -> acc
+      | y :: ys -> take' (y :: acc) (m - 1) ys
+    in
+    take' [] n ys |> rev
+  in
   let i' = if i < 0 then 0 else i in
   let k' = if k < 0 then 0 else k in
-  let _, dropped = split xs i' in
-  let taken, _ = split dropped (k' - i' + 1) in
-  taken
+  drop i' xs |> take (k' - i' + 1)
 ;;
 
 let rotate xs n =
@@ -179,4 +190,59 @@ let rotate xs n =
     let n'' = if n' < 0 then len + n' else n' in
     let left, right = split xs n'' in
     right @ left
+;;
+
+let remove_at k xs =
+  let rec remove_at' acc i = function
+    | [] -> acc
+    | _ :: xs when i == k -> remove_at' acc (i + 1) xs
+    | x :: xs -> remove_at' (x :: acc) (i + 1) xs
+  in
+  remove_at' [] 0 xs |> rev
+;;
+
+let insert_at x i xs =
+  let rec insert_at' acc k = function
+    | ys when k == 0 -> rev (x :: acc) @ ys
+    | [] -> rev (x :: acc)
+    | y :: ys -> insert_at' (y :: acc) (k - 1) ys
+  in
+  let i' = if i < 0 then 0 else i in
+  insert_at' [] i' xs
+;;
+
+let range i k =
+  let rec range' acc i' = if i' <= k then range' (i' :: acc) (i' + 1) else acc in
+  range' [] i |> rev
+;;
+
+let rand_select xs n =
+  Random.init 0;
+  let choose_n xs len n =
+    let rec choose_n' acc xs len n =
+      if n <= 0 || len <= 0
+      then acc
+      else (
+        let index = Random.int len in
+        match split xs index with
+        | _, [] -> acc
+        | xs, y :: ys -> choose_n' (y :: acc) (xs @ ys) (len - 1) (n - 1))
+    in
+    choose_n' [] xs len n
+  in
+  let len = length xs in
+  choose_n xs len n |> rev
+;;
+
+let lotto_select n m =
+  Random.init 0;
+  let rec rand' limit acc =
+    if limit <= 0
+    then acc
+    else (
+      let x = 1 + Random.int m in
+      rand' (limit - 1) (x :: acc))
+  in
+  let n' = if n < 0 then 0 else n in
+  rand' n' [] |> rev
 ;;
