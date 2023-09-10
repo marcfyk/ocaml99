@@ -1,3 +1,4 @@
 (test
  (name ocaml99_exercises_test)
- (libraries ounit2 ocaml99))
+ (libraries ounit2 ocaml99)
+ (modules ocaml99_exercises_test diff))
